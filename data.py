@@ -51,6 +51,8 @@ class Endpoints:
 
     CREATE_ORDER = 'https://stellarburgers.nomoreparties.site/api/orders' # POST Создание заказа
 
+    GET_INGREDIENTS = 'https://stellarburgers.nomoreparties.site/api/ingredients' # GET получить данные об ингредиентах
+
     GET_ALL_ORDERS = 'https://stellarburgers.nomoreparties.site/api/orders/all' # GET Получить все заказы
 
     GET_ORDERS_OF_CURRENT_USER = 'https://stellarburgers.nomoreparties.site/api/orders' # GET Получить заказ пользоват.
