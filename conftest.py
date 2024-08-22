@@ -35,12 +35,7 @@ def create_user_and_login(generator):
     access_token = r['accessToken']
     print(access_token)
 
-    refresh_token = r['refreshToken']
-    print(refresh_token)
-
     # Проверяем авторизацию:
-
-    email, password, firstName = generator
 
     data_login = {
         "email": email,
@@ -48,9 +43,39 @@ def create_user_and_login(generator):
     }
 
     url_login = Endpoints.LOGIN_USER
-    response = requests.post(url_login, data_login, headers={'Authorization': access_token})
-    return response
+    requests.post(url_login, data_login, headers={'Authorization': access_token})
 
+    return access_token
+
+   # response = requests.post(url_login, data_login, headers={'Authorization': access_token})
+   # return response
+
+
+
+ #   refresh_token = r['refreshToken']
+ #   print(refresh_token)
+
+
+@pytest.fixture()
+def create_user(generator):
+
+    url = Endpoints.CREATE_USER
+    email, password, firstName = generator
+    data = {
+
+        "email": email,
+        "password": password,
+        "name": firstName
+
+    }
+
+    response_register = requests.post(url, data)
+
+    r = response_register.json()
+    access_token = r['accessToken']
+    print(access_token)
+
+    return access_token
 
 
 

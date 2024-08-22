@@ -1,13 +1,8 @@
 import requests
 import allure
-import pytest
-
 from conftest import generator
-#from conftest import create_user
-
 from data import Endpoints
-from data import FakeData
-
+from data import TestData
 
 class TestCreateUser:
 
@@ -15,9 +10,7 @@ class TestCreateUser:
     def test_able_to_create_user_create_user_success(self, generator):
 
         email, password, firstName = generator
-
         url = Endpoints.CREATE_USER
-
         data = {
 
          "email": email,
@@ -26,15 +19,7 @@ class TestCreateUser:
 
         }
 
-        response = requests.post(url, data)    # дату не забываем
-
-        print(response.status_code)
-        print(response.text)
-        print(response.url) # куда послали (итоговый URL адрес)
-        print(response.json()) # десериализация
-        print(data)
-
-
+        response = requests.post(url, data)
         assert 200 == response.status_code
 
     @allure.title("Проверка невозможности создания 2-х пользователей с одним email")
@@ -44,18 +29,14 @@ class TestCreateUser:
 
         data = {
 
-         "email": "email_that_already_exists@yandex.ru",
-         "password": "123456",
-         "name": "Yandex"
+         "email": TestData.email_that_already_exists,
+         "password": TestData.test_password_1,
+         "name": TestData.test_name_2
 
         }
 
         requests.post(url, data)
-        response = requests.post(url, data)    # дату не забываем
-
-        print(response.reason)
-        print(response.json())
-
+        response = requests.post(url, data)
         assert 403 == response.status_code
 
     @allure.title("Проверка невозможности создания пользователя, если одно и полей не заполнено")
@@ -67,27 +48,9 @@ class TestCreateUser:
 
          "email": email,
          "password": password,
-         "name": ""
+         "name": TestData.empty_name
 
         }
 
         response = requests.post(url, data)
-
-        print(response.reason)
-        print(response.json())
-
         assert 403 == response.status_code
-
-
-
-
-
-# Повторение
-
-# import requests
-
-#    response = requests.get('https://qa-mesto.praktikum-services.ru/api/users/me',
-#                            headers={'Authorization': 'введи_сюда_свой_токен'})
-
-
-

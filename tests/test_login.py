@@ -1,39 +1,16 @@
 import requests
-import allure
-import pytest
-
-#from conftest import generator
-#from conftest import create_user
-
 from data import Endpoints
-from data import FakeData
+import allure
+from data import TestData
+
 
 class TestLogin:
 
-    def test_login_under_existing_user_success_login(self, generator):
+    @allure.title('Логин под существующим пользователем')
+    def test_login_under_existing_user_success_login(self, create_user, generator):
 
-        url_create_user = Endpoints.CREATE_USER
         email, password, firstName = generator
-        data = {
-
-            "email": email,
-            "password": password,
-            "name": firstName
-
-        }
-
-        response_register = requests.post(url_create_user, data)
-
-        r = response_register.json()
-        access_token = r['accessToken']
-        print(access_token)
-
-        refresh_token = r['refreshToken']
-        print(refresh_token)
-
-        # Проверяем авторизацию:
-
-      #  email, password, firstName = generator
+        access_token = create_user
 
         data_login = {
             "email": email,
@@ -45,33 +22,15 @@ class TestLogin:
 
         assert response_login.status_code == 200
 
-    def test_login_under_unexisting_user_unable_to_login(self, generator): # тут
+    @allure.title('Логин с неверным логином и паролем')
+    @allure.description('Передаем несуществующий email, получаем 401')
+    def test_login_under_unexisting_user_unable_to_login(self, create_user, generator):
 
-        url = Endpoints.CREATE_USER
         email, password, firstName = generator
-        data = {
-
-            "email": email,
-            "password": password,
-            "name": firstName
-
-        }
-
-        response_register = requests.post(url, data)
-
-        r = response_register.json()
-        access_token = r['accessToken']
-        print(access_token)
-
-        refresh_token = r['refreshToken']
-        print(refresh_token)
-
-        # Проверяем авторизацию:
-
-      #  email, password, firstName = generator
+        access_token = create_user
 
         data_login = {
-            "email": "this_email_does_not_exist@yandex.jj", # несуществующий email
+            "email": TestData.unexisting_email,
             "password": password
         }
 
@@ -79,7 +38,3 @@ class TestLogin:
         response = requests.post(url_login, data_login, headers={'Authorization': access_token})
 
         assert response.status_code == 401
-
-# ПРОДОЛЖИТЬ ТУТ
-
-

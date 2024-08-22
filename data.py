@@ -1,21 +1,14 @@
 
 import faker
-
 import allure
-import random
-import string
 
 class FakeData:
 
     @allure.description('Метод генерации данных с использованием модуля Faker')
     @staticmethod
-    def get_sign_up_data():  # выделить в класс
-
+    def get_sign_up_data():
 
         fake = faker.Faker()
-
-      #  login = fake.text(max_nb_chars=10)
-
         email = fake.email()
         password = fake.password(6, False, True, False, True)
         firstName = fake.text(max_nb_chars=10)
@@ -23,45 +16,44 @@ class FakeData:
         return email, password, firstName
 
 
-
-
-        #def generate_random_string(length):
-        #    letters = string.ascii_lowercase
-        #    random_string = ''.join(random.choice(letters) for i in range(length))
-        #    return random_string
-
-        #email = generate_random_string(10)
-        #password = generate_random_string(10)
-        #firstName = generate_random_string(10)
-
-        #return email, password, firstName
-
 @allure.title('URL и ручки')
 class Endpoints:
 
-    CREATE_USER = 'https://stellarburgers.nomoreparties.site/api/auth/register' # POST Создание юзера
+    BASE_URL = 'https://stellarburgers.nomoreparties.site/'
 
-    LOGIN_USER = 'https://stellarburgers.nomoreparties.site/api/auth/login' # POST Авторизация
+    CREATE_USER = f'{BASE_URL}api/auth/register' # POST Создание юзера
 
-    LOGOUT_USER = 'https://stellarburgers.nomoreparties.site/api/auth/logout' # POST Выход из системы
+    LOGIN_USER = f'{BASE_URL}api/auth/login' # POST Авторизация
 
-    GET_USER_DATA = 'https://stellarburgers.nomoreparties.site/api/auth/user' # GET Получить данные польз.
+    LOGOUT_USER = f'{BASE_URL}api/auth/logout' # POST Выход из системы
 
-    EDIT_USER_DATA = 'https://stellarburgers.nomoreparties.site/api/auth/user' # PATCH Изменение данных польз.
+    GET_USER_DATA = f'{BASE_URL}api/auth/user' # GET Получить данные польз.
 
-    CREATE_ORDER = 'https://stellarburgers.nomoreparties.site/api/orders' # POST Создание заказа
+    EDIT_USER_DATA = f'{BASE_URL}api/auth/user' # PATCH Изменение данных польз.
 
-    GET_INGREDIENTS = 'https://stellarburgers.nomoreparties.site/api/ingredients' # GET получить данные об ингредиентах
+    CREATE_ORDER = f'{BASE_URL}api/orders' # POST Создание заказа
 
-    GET_ALL_ORDERS = 'https://stellarburgers.nomoreparties.site/api/orders/all' # GET Получить все заказы
+    GET_INGREDIENTS = f'{BASE_URL}api/ingredients' # GET получить данные об ингредиентах
 
-    GET_ORDERS_OF_CURRENT_USER = 'https://stellarburgers.nomoreparties.site/api/orders' # GET Получить заказ пользоват.
+    GET_ALL_ORDERS = f'{BASE_URL}api/orders/all' # GET Получить все заказы
 
-    UPDATE_TOKEN = 'https://stellarburgers.nomoreparties.site/api/auth/token' # POST Обновление токена refreshToken
+    GET_ORDERS_OF_CURRENT_USER = f'{BASE_URL}api/orders' # GET Получить заказ пользоват.
 
-    DELETE_USER = 'https://stellarburgers.nomoreparties.site/api/auth/user' # DELETE Удаление польз.
+    UPDATE_TOKEN = f'{BASE_URL}api/auth/token' # POST Обновление токена refreshToken
+
+    DELETE_USER = f'{BASE_URL}api/auth/user' # DELETE Удаление польз.
 
 
-# requests.exceptions.InvalidSchema: No connection adapters were found for '4https://stellarburgers.nomoreparties.site/api/auth/login'
-# - исключение при неверном URL
+class TestData:
+
+    email_that_already_exists = "email_that_already_exists@yandex.ru"
+    unexisting_email = "this_email_does_not_exist@yandex.jj"
+    test_password_1 = '123456'
+    test_name_1 = 'name'
+    test_name_2 = 'Yandex'
+    empty_name = ''
+    wrong_ingredient = '["wrong_ingredient"]'
+    new_user_name = "new_user_name"
+    unauthorized_message = 'Unauthorized'
+    you_should_be_authorised_message = 'You should be authorised'
 

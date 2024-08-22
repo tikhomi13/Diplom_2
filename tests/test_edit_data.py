@@ -1,114 +1,44 @@
 import requests
 import allure
 from data import Endpoints
+from data import TestData
 
 
 class TestEditUserData:
 
-    def test_edit_data_user_authorized_success(self, generator):
+    @allure.title('Изменение данных авторизованного пользователя')
+    @allure.description('Создаем пользователя, затем меняем email, пароль и имя')
+    def test_edit_data_user_authorized_success(self, create_user, generator):
 
-        # Создаем пользователя
-
-        url = Endpoints.CREATE_USER
-        email, password, firstName = generator
-        data = {
-
-            "email": email,
-            "password": password,
-            "name": firstName
-
-        }
-
-        response_register = requests.post(url, data)
-
-        r = response_register.json()
-        access_token = r['accessToken']
-        print(access_token)
-
-        refresh_token = r['refreshToken']
-        print(refresh_token)
-
-        # Меняем данные
-
+        email = generator
+        access_token = create_user
         url_change_data = Endpoints.EDIT_USER_DATA
 
         update_data = {
 
-            "email": f'new_{email}',   # Меняем Email
-            "password": "123456",      # Меняем пароль
-            "name": "new_user_name"    # Меняем имя
+            "email": f'new_{email}',
+            "password": TestData.test_password_1,
+            "name": TestData.new_user_name
 
         }
 
         response_edit_data = requests.patch(url_change_data, update_data, headers={'Authorization': access_token})
-        print(response_edit_data.status_code)
-        print(response_edit_data.reason)
-        print(response_edit_data.json())
-
         assert response_edit_data.status_code == 200
 
-        # спросить как передать токен авторизации из фикстуры в тест чтобы не дублировать код и убрать его в фикстуру
+    @allure.title('Изменение данных Неавторизованного пользователя')
+    @allure.description('Не передаем токен авторизации, проверяем, что вернулся код 401')
+    def test_edit_data_user_unauthorized_unable_to_edit(self, create_user, generator):
 
-        # добавить в ридми гайд по ошибке fixture 'generator' not found - что зайти в конфиг и убрать тестс
-
-    def test_edit_data_user_unauthorized_unable_to_edit(self, generator):
-
-        # Создаем пользователя
-
-        url = Endpoints.CREATE_USER
-        email, password, firstName = generator
-        data = {
-
-            "email": email,
-            "password": password,
-            "name": firstName
-
-        }
-
-        response_register = requests.post(url, data)
-        print(response_register.status_code)
-
-        # меняем данные
-
+        email = generator
         url_change_data = Endpoints.EDIT_USER_DATA
         update_data = {
 
-            "email": f'new_{email}',   # Меняем Email
-            "password": "123456",      # Меняем пароль
-            "name": "new_user_name"    # Меняем имя
+            "email": f'new_{email}',
+            "password": TestData.test_password_1,
+            "name": TestData.new_user_name
 
         }
 
-        response_edit_data = requests.patch(url_change_data, update_data) # не передаем токен авторизации
-        print(response_edit_data.status_code)
-        print(response_edit_data.reason)
-        print(response_edit_data.json())
-
-        assert 401 == response_edit_data.status_code      # Проверяем, что система вернула ошибку
+        response_edit_data = requests.patch(url_change_data, update_data)
+        assert 401 == response_edit_data.status_code
         assert 'Unauthorized' == response_edit_data.reason
-
-
-
-
-
-
-
-
-
-
-
-#        print(response_edit_data.reason)
-#        print(response_edit_data.text)
-#        print(response_edit_data.url) # куда послали (итоговый URL адрес)
-#        print(data)
-#        print(response_edit_data.json())
-
-
-
-
-
-
-
-
-
-
