@@ -20,7 +20,25 @@ class TestCreateUser:
         }
 
         response = requests.post(url, data)
+
+        user_data = list(response.json().values())[1]
+
         assert 200 == response.status_code
+        assert email in list(user_data.values())
+
+
+
+
+     #   print(list(response.json().keys())[0])
+     #   print(list(response.json().values())[0])
+      #  print(list(response.json().keys())[1])
+        print(list(user_data.values()))
+
+      #  print(list(response.json().values()))
+
+
+       # print(list(response.json()))
+
 
     @allure.title("Проверка невозможности создания 2-х пользователей с одним email")
     def test_unable_to_create_user_which_is_already_registered_response_403(self):
@@ -37,7 +55,15 @@ class TestCreateUser:
 
         requests.post(url, data)
         response = requests.post(url, data)
+
+        user_data = list(response.json().values())[1]
+
         assert 403 == response.status_code
+        assert user_data == "User already exists"
+
+
+        print(user_data)
+
 
     @allure.title("Проверка невозможности создания пользователя, если одно и полей не заполнено")
     def test_unable_to_create_user_if_one_of_fields_is_not_filled(self, generator):
@@ -53,4 +79,11 @@ class TestCreateUser:
         }
 
         response = requests.post(url, data)
+
+        user_data = list(response.json().values())[1]
+        print(user_data)
+
+
         assert 403 == response.status_code
+        assert user_data == "Email, password and name are required fields"
+

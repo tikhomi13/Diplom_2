@@ -45,15 +45,11 @@ def create_user_and_login(generator):
     url_login = Endpoints.LOGIN_USER
     requests.post(url_login, data_login, headers={'Authorization': access_token})
 
-    return access_token
+    yield access_token
 
-   # response = requests.post(url_login, data_login, headers={'Authorization': access_token})
-   # return response
+  #  url_delete = Endpoints.DELETE_USER
+  #  requests.delete(url_delete, headers={'Authorization': access_token})
 
-
-
- #   refresh_token = r['refreshToken']
- #   print(refresh_token)
 
 
 @pytest.fixture()

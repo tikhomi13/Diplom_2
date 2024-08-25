@@ -16,6 +16,16 @@ class FakeData:
         return email, password, firstName
 
 
+class NewFakeEmail:
+
+    @staticmethod
+    def get_new_email():
+
+        fake = faker.Faker()
+        new_email = fake.email()
+        return new_email
+
+
 @allure.title('URL и ручки')
 class Endpoints:
 

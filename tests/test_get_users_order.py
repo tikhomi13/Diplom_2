@@ -14,8 +14,10 @@ class TestGetOrders:
         url_get_users_orders = Endpoints.GET_ORDERS_OF_CURRENT_USER
         response_get_orders = requests.get(url_get_users_orders, headers={'Authorization': access_token})
 
-        assert response_get_orders.status_code == 200
+        data_response = list(response_get_orders.json().values())[0]
 
+        assert response_get_orders.status_code == 200
+        assert data_response == True
 
     @allure.title('Получение заказов без авторизации')
     @allure.description('Получаем 401 You should be authorised')
