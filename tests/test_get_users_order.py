@@ -28,7 +28,7 @@ class TestGetOrders:
 
         print(response.status_code)
         print(response.json())
-        print(response.json()['message'])
+        print(response.json()['message']) 
 
         assert response.status_code == 401
         assert response.reason == TestData.unauthorized_message

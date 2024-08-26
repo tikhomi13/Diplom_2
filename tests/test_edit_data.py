@@ -2,7 +2,7 @@ import requests
 import allure
 from data import Endpoints
 from data import TestData
-from data import NewFakeEmail
+from helpers import NewFakeEmail
 
 
 class TestEditUserData:

@@ -1,12 +1,12 @@
 import pytest
 import allure
 import json
-from data import FakeData
+from helpers import FakeData
 import requests
 import random
 import string
 
-from data import FakeData, Endpoints
+from data import Endpoints
 
 
 @pytest.fixture
@@ -47,8 +47,8 @@ def create_user_and_login(generator):
 
     yield access_token
 
-  #  url_delete = Endpoints.DELETE_USER
-  #  requests.delete(url_delete, headers={'Authorization': access_token})
+    url_delete = Endpoints.DELETE_USER
+    requests.delete(url_delete, headers={'Authorization': access_token})
 
 
 
