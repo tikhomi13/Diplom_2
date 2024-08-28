@@ -1,8 +1,4 @@
-
-import faker
 import allure
-
-
 
 
 @allure.title('URL и ручки')

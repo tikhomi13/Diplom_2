@@ -18,28 +18,12 @@ class TestCreateOrder:
         ingredient = r['data'][0]['_id']
 
         url_create_order = Endpoints.CREATE_ORDER
-        response_create_order = requests.get(url_create_order, ingredient, headers={'Authorization': access_token})   # Добавить авторизацию
-
-        print(list(response_create_order.json().keys())[0])
-        print(list(response_create_order.json().values())[0])
-        print(list(response_create_order.json()))
-
-       # print(list(response_create_order.json().values())[1][0])
-
+        response_create_order = requests.get(url_create_order, ingredient, headers={'Authorization': access_token})
         data_response = list(response_create_order.json().values())[0]
 
         assert response_create_order.status_code == 200
+        assert "success" in response_create_order.text
         assert data_response == True
-
-        print(data_response)
-
-
-       # assert response_create_order.text == "success"
-       # assert identifier == response.json()['id']
-
-
-
-
 
     @allure.title('Создание заказа без авторизации')
     @allure.description('Получаем ингредиент из запроса и сохраняем его в переменную ingredient')
@@ -59,9 +43,6 @@ class TestCreateOrder:
         assert response_create_order.status_code == 401
         assert data_response == False
 
-        print(data_response)
-
-
     @allure.title('Создание заказа c ингредиентом')
     @allure.description('Добываем ингредиент, создаем заказ, добавляем ингредиент')
     def test_create_order_with_ingredients_success(self, create_user_and_login):
@@ -79,10 +60,6 @@ class TestCreateOrder:
 
         assert response_create_order.status_code == 200
         assert data_response == True
-
-        print(data_response)
-
-
 
     @allure.title('Создание пустого заказа')
     def test_create_empty_order_error(self):

@@ -26,12 +26,6 @@ class TestGetOrders:
         url_get_users_orders = Endpoints.GET_ORDERS_OF_CURRENT_USER
         response = requests.get(url_get_users_orders)
 
-        print(response.status_code)
-        print(response.json())
-        print(response.json()['message']) 
-
         assert response.status_code == 401
         assert response.reason == TestData.unauthorized_message
         assert response.json()['message'] == TestData.you_should_be_authorised_message
-
-
