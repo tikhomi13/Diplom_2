@@ -2,6 +2,7 @@ import requests
 from data import Endpoints
 import allure
 from data import TestData
+from data import ResponsesTexts
 
 
 class TestLogin:
@@ -9,12 +10,13 @@ class TestLogin:
     @allure.title('Логин под существующим пользователем')
     def test_login_under_existing_user_success_login(self, create_user, generator):
 
-        email, password, firstName = generator
+        payload = generator
+
         access_token = create_user
 
         data_login = {
-            "email": email,
-            "password": password
+            "email": payload["email"],
+            "password": payload["password"]
         }
 
         url_login = Endpoints.LOGIN_USER
@@ -22,11 +24,13 @@ class TestLogin:
 
         token_from_user_data = list(response_login.json().values())[1]
         user_data = list(response_login.json().values())[3]
+
         my_email = list(user_data.values())[0]
+        actual_email = payload["email"]
 
         assert response_login.status_code == 200
         assert access_token == token_from_user_data
-        assert my_email == email
+        assert my_email == actual_email
 
     @allure.title('Логин с неверным логином и паролем')
     @allure.description('Передаем несуществующий email, получаем 401')
@@ -46,5 +50,5 @@ class TestLogin:
         user_data = list(response.json().values())[1]
 
         assert response.status_code == 401
-        assert response.reason == "Unauthorized"
-        assert user_data == "email or password are incorrect"
+        assert response.reason == ResponsesTexts.unauthorized
+        assert user_data == ResponsesTexts.wrong_email_or_password

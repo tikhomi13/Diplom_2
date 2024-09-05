@@ -2,6 +2,7 @@ import requests
 import allure
 from data import Endpoints
 from data import TestData
+from data import ResponsesTexts
 from helpers import NewFakeEmail
 
 
@@ -25,7 +26,6 @@ class TestEditUserData:
         }
 
         response_edit_data = requests.patch(url_change_data, update_data, headers={'Authorization': access_token})
-
         data_response = list(response_edit_data.json().values())[1]
 
         assert response_edit_data.status_code == 200
@@ -46,5 +46,6 @@ class TestEditUserData:
         }
 
         response_edit_data = requests.patch(url_change_data, update_data)
+
         assert 401 == response_edit_data.status_code
-        assert 'Unauthorized' == response_edit_data.reason
+        assert ResponsesTexts.unauthorized == response_edit_data.reason

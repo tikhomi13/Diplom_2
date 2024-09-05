@@ -1,7 +1,3 @@
-import allure
-
-
-@allure.title('URL и ручки')
 class Endpoints:
 
     BASE_URL = 'https://stellarburgers.nomoreparties.site/'
@@ -42,3 +38,13 @@ class TestData:
     unauthorized_message = 'Unauthorized'
     you_should_be_authorised_message = 'You should be authorised'
 
+
+class ResponsesTexts:
+
+    user_exists = "User already exists"
+    fields_required = "Email, password and name are required fields"
+    success = "success"
+    ok = "OK"
+    provide_ingredient = "Ingredient ids must be provided"
+    unauthorized = 'Unauthorized'
+    wrong_email_or_password = "email or password are incorrect"

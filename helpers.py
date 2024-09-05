@@ -1,9 +1,8 @@
 import faker
-import allure
+
 
 class FakeData:
 
-    @allure.description('Метод генерации данных с использованием модуля Faker')
     @staticmethod
     def get_sign_up_data():
 

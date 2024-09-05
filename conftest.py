@@ -3,18 +3,13 @@ from helpers import FakeData
 import requests
 from data import Endpoints
 
+
 @pytest.fixture
 def generator():
 
     email, password, firstName = FakeData.get_sign_up_data()
-    return email, password, firstName
 
-@pytest.fixture
-def create_user_and_login(generator):
-
-    url = Endpoints.CREATE_USER
-    email, password, firstName = generator
-    data = {
+    payload = {
 
         "email": email,
         "password": password,
@@ -22,15 +17,25 @@ def create_user_and_login(generator):
 
     }
 
+    return payload
+
+
+@pytest.fixture(scope='function')
+def create_user_and_login(generator):
+
+    url = Endpoints.CREATE_USER
+    data = generator
     response = requests.post(url, data)
 
     r = response.json()
     access_token = r['accessToken']
-    print(access_token)
+
+    my_email = data["email"]
+    my_password = data["password"]
 
     data_login = {
-        "email": email,
-        "password": password
+        "email": my_email,
+        "password": my_password
     }
 
     url_login = Endpoints.LOGIN_USER
@@ -41,23 +46,15 @@ def create_user_and_login(generator):
     url_delete = Endpoints.DELETE_USER
     requests.delete(url_delete, headers={'Authorization': access_token})
 
+
 @pytest.fixture()
 def create_user(generator):
 
     url = Endpoints.CREATE_USER
-    email, password, firstName = generator
-    data = {
-
-        "email": email,
-        "password": password,
-        "name": firstName
-
-    }
-
+    data = generator
     response_register = requests.post(url, data)
 
     r = response_register.json()
     access_token = r['accessToken']
-    print(access_token)
 
     return access_token
